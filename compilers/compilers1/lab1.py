@@ -1,8 +1,5 @@
 from enum import Enum
 
-import sys
-sys.setrecursionlimit(100)
-
 MARKER = '$'
 STARTING_SYMBOL = 'S'
 
