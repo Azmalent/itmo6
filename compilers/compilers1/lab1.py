@@ -1,5 +1,3 @@
-from enum import Enum
-
 MARKER = '$'
 STARTING_SYMBOL = 'S'
 
@@ -81,7 +79,7 @@ class Parser:
                 relationship = self.getRelationship(top, nextToken)
                 if relationship == '>':             # Reduce
                     self.fullReduce(stack)
-                else:    # Shift
+                else:                               # Shift
                     stack.append(relationship)
                     stack.append(nextToken)
                     input = input[1:]
