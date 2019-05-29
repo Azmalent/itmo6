@@ -1,4 +1,3 @@
-import pytest
 from lab1 import Parser
 
 parser = Parser()

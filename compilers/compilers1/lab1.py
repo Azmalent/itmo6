@@ -83,7 +83,6 @@ class Parser:
                     stack.append(relationship)
                     stack.append(nextToken)
                     input = input[1:]
-        except ValueError as err:
+        except ValueError:
             return False
         return True
-        
