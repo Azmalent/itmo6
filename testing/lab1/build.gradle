@@ -1,5 +1,7 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+
 buildscript {
-    ext.kotlin_version = '1.2.51'
+    ext.kotlin_version = '1.3.11'
 
     repositories {
         mavenCentral()
@@ -7,6 +9,10 @@ buildscript {
     dependencies {
         classpath group: 'org.jetbrains.kotlin', name:'kotlin-gradle-plugin', version: kotlin_version
     }
+}
+
+plugins {
+    id 'nu.studer.credentials' version '1.0.7'
 }
 
 group 'dmitry'
@@ -19,10 +25,27 @@ repositories {
 }
 
 dependencies {
-    compile group: 'org.jetbrains.kotlin', name:'kotlin-stdlib-jdk8', version: '$kotlin_version'
+    compile group: 'org.jetbrains.kotlin', name:'kotlin-stdlib-jdk8', version: kotlin_version
+    compile group: 'org.jetbrains.kotlin', name:'kotlin-reflect', version: kotlin_version
+    compile group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '3.14.0'
+    compile group: 'org.seleniumhq.selenium', name: 'selenium-firefox-driver', version: '3.14.0'
+}
 
-    testCompile group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '3.14.0'
-    testCompile group: 'org.seleniumhq.selenium', name: 'selenium-firefox-driver', version: '3.14.0'
+task generateSources(type: Copy) {
+    from 'src/main/kotlin'
+    into "$buildDir/generatedSrc"
+    filter (ReplaceTokens, tokens: [
+            "LOGIN":    credentials.tpo1_google_login,
+            "PASSWORD": credentials.tpo1_google_password,
+            "DRIVER_LOCATION": driverLocation
+    ])
+}
+
+compileKotlin.dependsOn generateSources
+
+sourceSets {
+    main.kotlin.srcDirs = ["$buildDir/generatedSrc"]
+    test.kotlin.srcDirs = ["src/main/kotlin"]
 }
 
 compileKotlin {
