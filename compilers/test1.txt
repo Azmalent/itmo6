@@ -1,0 +1,10 @@
+Int foo, bar, baz;
+Bin a, b, c;
+
+Begin	//This is a comment, should be ignored
+	
+	foo := 5 * 20 - 25;
+	bar := -foo / 5;
+	b := 1;
+	
+End
