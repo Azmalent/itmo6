@@ -16,6 +16,6 @@ class MusicTrack(id: EntityID<Int>) : IntEntity(id) {
     var year by MusicTracks.year
 
     override fun toString(): String {
-        return "#$id\t$artist - $name ($year)"
+        return "#$id\t${artist ?: "Неизвестный исполнитель"} - $name ($year)"
     }
 }

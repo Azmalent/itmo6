@@ -10,9 +10,7 @@ import org.junit.Assert.assertTrue
 import org.mockito.ArgumentMatchers.anyString
 
 class SignUpPageTests : StringSpec({
-    val spy = spy(SignUpPage) {
-        on { isUsernameTaken(anyString()) } doReturn false
-    }
+    val spy = spy(SignUpPage)
     doNothing().whenever(spy).createUser(anyString(), anyString())
 
     "Password is too short" {

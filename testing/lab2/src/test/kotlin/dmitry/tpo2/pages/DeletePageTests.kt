@@ -6,13 +6,13 @@ import com.nhaarman.mockitokotlin2.spy
 import com.nhaarman.mockitokotlin2.whenever
 import io.kotlintest.specs.StringSpec
 import org.junit.Assert.assertTrue
-import org.mockito.ArgumentMatchers
+import org.mockito.ArgumentMatchers.anyInt
 
 class DeletePageTests : StringSpec({
     val spy = spy<DeletePage> {
         on { readInt() } doReturn 20
-        on { tryDeleteTrack(ArgumentMatchers.anyInt()) } doReturn true
     }
+    doReturn(true).whenever(spy).tryDeleteTrack(anyInt())
     doNothing().whenever(spy).anykey()
 
     "Returns to menu" {

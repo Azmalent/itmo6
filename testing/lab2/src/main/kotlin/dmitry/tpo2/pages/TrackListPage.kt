@@ -13,14 +13,19 @@ object TrackListPage : AbstractPage() {
         }
     }
 
+    fun printList(list: SizedIterable<MusicTrack>) {
+        transaction {
+            if (list.count() > 0) {
+                list.forEach(::println)
+            } else {
+                println("Ничего не найдено!")
+            }
+        }
+    }
+
     override fun runInteractionLogic(): AbstractPage {
         val list = getTracks()
-
-        if (list.count() > 0) {
-            list.forEach(::println)
-        } else {
-            println("Ничего не найдено!")
-        }
+        printList(list)
 
         anykey()
         return MenuPage

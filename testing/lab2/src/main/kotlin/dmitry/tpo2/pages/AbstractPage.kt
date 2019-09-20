@@ -14,9 +14,9 @@ abstract class AbstractPage {
         return readLine() ?: default
     }
 
-    fun readInt(): Int {
+    fun readInt(): Int? {
         val input = readLine()
-        return Integer.parseInt(input ?: "0")
+        return (input ?: "").toIntOrNull()
     }
 
     fun anykey() {

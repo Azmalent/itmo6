@@ -7,7 +7,7 @@ import org.jetbrains.exposed.sql.transactions.transaction
 object NewTrackPage : AbstractPage() {
     override val pageTitle = "Добавить аудиозапись"
 
-    fun addTrack(name: String, artist: String, year: Int) {
+    fun addTrack(name: String, artist: String, year: Int?) {
         transaction {
             MusicTrack.new {
                 this.name = name
@@ -25,7 +25,7 @@ object NewTrackPage : AbstractPage() {
             val artist = readUserInput("Неизвестный исполнитель")
             println("Введите год: ")
             val year = readInt()
-            if (year < 0) throw IllegalArgumentException("год не может быть отрицательным!")
+            if (year != null && year < 0) throw IllegalArgumentException("год не может быть отрицательным!")
 
             addTrack(name, artist, year)
 

@@ -20,7 +20,7 @@ object DeletePage : AbstractPage() {
         println("Введите ID записи для удаления: ")
 
         val id = readInt()
-        val deleted = tryDeleteTrack(id)
+        val deleted = tryDeleteTrack(id ?: 0)
         if (deleted) {
             println("Запись удалена.")
         } else {

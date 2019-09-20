@@ -23,5 +23,9 @@ class Artist(id: EntityID<Int>) : IntEntity(id) {
 
     var name by Artists.name
     val tracks by MusicTrack optionalReferrersOn MusicTracks.artist
+
+    override fun toString(): String {
+        return name
+    }
 }
 
