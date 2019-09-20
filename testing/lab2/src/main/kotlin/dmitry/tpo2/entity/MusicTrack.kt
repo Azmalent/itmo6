@@ -1,16 +1,21 @@
 package dmitry.tpo2.entity
 
-import org.jetbrains.exposed.dao.Entity
-import org.jetbrains.exposed.dao.EntityClass
-import org.jetbrains.exposed.dao.EntityID
-import org.jetbrains.exposed.sql.Table
+import org.jetbrains.exposed.dao.*
 
-object MusicTracks : Table() {
-    val id = integer("id").autoIncrement().primaryKey()
-    val artistId = (integer("artistID") references Artists.id).nullable()
+object MusicTracks : IntIdTable() {
     val name = varchar("name", 20)
+    val artist = reference("artistID",  Artists).nullable()
+    val year = integer("year").check { it.greater(0) }.nullable()
 }
 
-class MusicTrack(id: EntityID<Int>) : Entity<Int>(id) {
-    companion object : EntityClass<Int, MusicTrack>(MusicTracks)
+class MusicTrack(id: EntityID<Int>) : IntEntity(id) {
+    companion object : IntEntityClass<MusicTrack>(MusicTracks)
+
+    var name by MusicTracks.name
+    var artist by Artist optionalReferencedOn MusicTracks.artist
+    var year by MusicTracks.year
+
+    override fun toString(): String {
+        return "#$id\t$artist - $name ($year)"
+    }
 }
