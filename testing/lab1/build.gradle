@@ -27,8 +27,8 @@ repositories {
 dependencies {
     compile group: 'org.jetbrains.kotlin', name:'kotlin-stdlib-jdk8', version: kotlin_version
     compile group: 'org.jetbrains.kotlin', name:'kotlin-reflect', version: kotlin_version
-    compile group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '3.14.0'
-    compile group: 'org.seleniumhq.selenium', name: 'selenium-firefox-driver', version: '3.14.0'
+    compile group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '3.141.59'
+    compile group: 'org.seleniumhq.selenium', name: 'selenium-firefox-driver', version: '3.141.59'
 }
 
 task generateSources(type: Copy) {

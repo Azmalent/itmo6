@@ -5,7 +5,7 @@ object AboutPage : AbstractPage() {
 
     override fun runInteractionLogic(): AbstractPage {
         println(" - Данное ПО доступно по лицензии WTFPL\n" +
-                " - Делайте чё хотите\n" +
+                " - Делайте что хотите\n" +
                 " - Никакие права не защищены\n")
         anykey()
         return MenuPage
