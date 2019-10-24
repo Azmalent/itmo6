@@ -1,41 +1,33 @@
 package dmitry.tpo3.tests
 
-import dmitry.tpo3.CommonContext
-import dmitry.tpo3.CommonContext.PASSWORD
-import dmitry.tpo3.CommonContext.driver
-import dmitry.tpo3.PlatformTouchAction
-import dmitry.tpo3.Utils.clickAt
-import dmitry.tpo3.Utils.findById
-import dmitry.tpo3.Utils.waitById
 import io.appium.java_client.MobileBy
-import io.appium.java_client.touch.offset.PointOption.point
 import io.kotlintest.IsolationMode
-import io.kotlintest.Spec
 import io.kotlintest.shouldBe
 import io.kotlintest.shouldNotBe
-import io.kotlintest.specs.WordSpec
 import org.openqa.selenium.support.ui.ExpectedConditions
 
 
-class RegistrationAndLoginTests : WordSpec() {
-    override fun isolationMode(): IsolationMode? = IsolationMode.InstancePerLeaf
-
-    override fun afterSpec(spec: Spec) {
-        CommonContext.driver.resetApp()
+class RegistrationAndLoginTests : AbstractTwitterTestSet() {
+    companion object {
+        const val REGISTER_BUTTON_ID = "com.twitter.android:id/primary_action"
+        const val PHONE_EMAIL_INPUT_ID = "com.twitter.android:id/phone_or_email_field"
+        const val USE_EMAIL_BUTTON_ID = "com.twitter.android:id/secondary_button"
+        const val NEXT_BUTTON_ID = "com.twitter.android:id/cta_button"
     }
+
+    override fun isolationMode(): IsolationMode? = IsolationMode.InstancePerLeaf
 
     init {
         "Registration" should {
-            val registerButton = waitById("com.twitter.android:id/primary_action")
-            registerButton.click()
+            findById(REGISTER_BUTTON_ID).click()
 
-            val textField = waitById("com.twitter.android:id/phone_or_email_field")
-            val nextButton = waitById("com.twitter.android:id/cta_button")
+            val textField = findById(PHONE_EMAIL_INPUT_ID)
+            val nextButton = findById(NEXT_BUTTON_ID)
 
             "fail with a non-existing email" {
                 textField.click()
 
-                val useEmail = findById("com.twitter.android:id/secondary_button")
+                val useEmail = findById(USE_EMAIL_BUTTON_ID)
                 useEmail.click()
 
                 textField.sendKeys("invalidmail@domain.null")
@@ -43,50 +35,56 @@ class RegistrationAndLoginTests : WordSpec() {
                 textField.clear()
 
                 useEmail.click()
+
+                goBack()
             }
 
             "fail with a non-existing phone number" {
                 textField.sendKeys("+1-202-555-0180")
                 nextButton.isEnabled shouldBe false
                 textField.clear()
+
+                goBack()
             }
         }
 
-        "Sign in" should {
-            val detailText = waitById("com.twitter.android:id/detail_text")
-            with(detailText.location) {
-                x += 500
+        "Log in" should {
+            val loginText = findById(LOGIN_TEXT_ID)
+            with(loginText.location) {
+                x += 600
                 clickAt(this)
             }
 
-            val usernameInput = findById("com.twitter.android:id/login_identifier")
-            val passwordInput = findById("com.twitter.android:id/login_password")
-            val loginButton = findById("com.twitter.android:id/login_login")
-
-            val progressBarLocator = MobileBy.id("android:id/progress")
+            val usernameInput = findById(USERNAME_INPUT_ID)
+            val passwordInput = findById(PASSWORD_INPUT_ID)
+            val loginButton = findById(LOGIN_BUTTON_ID)
 
             "fail with invalid username" {
-                usernameInput.sendKeys(CommonContext.USERNAME.reversed())
-                passwordInput.sendKeys(CommonContext.PASSWORD)
+                usernameInput.sendKeys(USERNAME.reversed())
+                passwordInput.sendKeys(PASSWORD)
                 loginButton.click()
 
-                CommonContext.wait.until {
-                    ExpectedConditions.invisibilityOfElementLocated(progressBarLocator)
+                wait.until {
+                    ExpectedConditions.invisibilityOfElementLocated(MobileBy.id("android:id/progress"))
                 }
 
-                findById("com.twitter.android:id/login_identifier").isDisplayed shouldBe true
+                findById(USERNAME_INPUT_ID).isDisplayed shouldBe true
+
+                goBack()
             }
 
             "fail with invalid password" {
-                usernameInput.sendKeys(CommonContext.USERNAME)
-                passwordInput.sendKeys(CommonContext.PASSWORD.reversed())
+                usernameInput.sendKeys(USERNAME)
+                passwordInput.sendKeys(PASSWORD.reversed())
                 loginButton.click()
 
-                CommonContext.wait.until {
-                    ExpectedConditions.invisibilityOfElementLocated(progressBarLocator)
+                wait.until {
+                    ExpectedConditions.invisibilityOfElementLocated(MobileBy.id("android:id/progress"))
                 }
 
-                findById("com.twitter.android:id/login_identifier").isDisplayed shouldBe true
+                findById(USERNAME_INPUT_ID).isDisplayed shouldBe true
+
+                goBack()
             }
 
             "show/hide password" {
@@ -99,21 +97,9 @@ class RegistrationAndLoginTests : WordSpec() {
                 passwordInput.text shouldBe PASSWORD
                 clickAt(buttonLocation)
                 passwordInput.text shouldNotBe PASSWORD
+
+                goBack()
             }
-
-/*            "succeed with valid credentials" {
-                usernameInput.sendKeys(CommonContext.USERNAME)
-                passwordInput.sendKeys(CommonContext.PASSWORD)
-                loginButton.click()
-
-                CommonContext.wait.until {
-                    ExpectedConditions.invisibilityOfElementLocated(progressBarLocator)
-                }
-
-                shouldThrow<NoSuchElementException> {
-                    findById("com.twitter.android:id/login_identifier")
-                }
-            }*/
         }
     }
 }
