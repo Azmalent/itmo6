@@ -36,7 +36,7 @@ class AppTests : AbstractTwitterTestSet() {
         const val CONFIRM_BUTTON_ID = "android:id/button1"
     }
 
-    override fun beforeSpecClass(spec: Spec, tests: List<TopLevelTest>) {
+    override fun beforeSpecClass(spec: Spec, testsll: List<TopLevelTest>) {
         val detailText = findById(LOGIN_TEXT_ID)
         with(detailText.location) {
             x += 600
@@ -77,11 +77,12 @@ class AppTests : AbstractTwitterTestSet() {
             }
 
             "be deletable" {
+                Thread.sleep(5000)
                 findById(TWEET_CURATION_ID).click()
                 findByXpath("//*[@text='Delete Tweet']").click()
                 findById(CONFIRM_BUTTON_ID).click()
 
-                Thread.sleep(1000)
+                Thread.sleep(5000)
                 driver.findElementsById("com.twitter.android:id/row").size shouldBe 0
             }
 
@@ -123,7 +124,6 @@ class AppTests : AbstractTwitterTestSet() {
             "be mutable" {
                 clickAt(menuButton)
                 findByXpath("//*[@text='Mute']").click()
-                //findById(CONFIRM_BUTTON_ID).click()
 
                 val mutedText = findById("com.twitter.android:id/profile_muted")
                 mutedText.text shouldStartWith "You have muted Tweets from this account"
@@ -132,8 +132,6 @@ class AppTests : AbstractTwitterTestSet() {
             "be unmutable" {
                 clickAt(menuButton)
                 findByXpath("//*[@text='Unmute']").click()
-
-                driver.findElementsById("com.twitter.android:id/profile_muted").shouldBeEmpty()
             }
 
             "be blockable" {
@@ -147,8 +145,6 @@ class AppTests : AbstractTwitterTestSet() {
             "be unblockable" {
                 findById(UNBLOCK_BUTTON_ID).click()
                 findById(CONFIRM_BUTTON_ID).click()
-
-                driver.findElementsById(UNBLOCK_BUTTON_ID).shouldBeEmpty()
             }
 
             goBack(3)

@@ -9,16 +9,10 @@ import io.appium.java_client.android.nativekey.KeyEvent
 import io.appium.java_client.remote.AndroidMobileCapabilityType
 import io.appium.java_client.remote.MobileCapabilityType
 import io.appium.java_client.touch.offset.PointOption
-import io.appium.java_client.windows.PressesKeyCode
-import io.kotlintest.IsolationMode
-import io.kotlintest.Spec
 import io.kotlintest.TestCaseOrder
-import io.kotlintest.shouldThrow
 import io.kotlintest.specs.WordSpec
 import org.openqa.selenium.By
-import org.openqa.selenium.NoSuchElementException
 import org.openqa.selenium.Point
-import org.openqa.selenium.StaleElementReferenceException
 import org.openqa.selenium.remote.DesiredCapabilities
 import org.openqa.selenium.support.ui.ExpectedConditions
 import org.openqa.selenium.support.ui.WebDriverWait
@@ -59,7 +53,7 @@ abstract class AbstractTwitterTestSet() : WordSpec() {
             driver = AndroidDriver<MobileElement>(url, capabilities)
             wait = WebDriverWait(driver, 30)
 
-            driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS)
+            driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS)
         }
     }
 
